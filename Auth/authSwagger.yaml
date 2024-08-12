@@ -1,0 +1,576 @@
+openapi: '3.0.0'
+info:
+  version: 3.0.0
+  title: Auction API's
+  description: A sample API
+  contact:
+      name: API Support
+      email: hardik.jain@yash.com
+  termsOfService: http://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://{base_url}/{env_id}
+    variables:
+      base_url:
+        default: localhost:9000
+        description: server
+      env_id:
+        default: api
+        description: path selector
+paths:
+  /auth/sign-up:
+    post:
+      tags:
+      - Auction Authentication Management 
+      summary: Create New User In Cognito
+      description: To Create New Team Owner.
+      operationId: signupUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequestBody'     
+      responses:
+        200:
+          description: "User Created Successfully"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SignupResponseBody"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: "Page Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent" 
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+  /auth/login: 
+    post:
+        tags:
+        - Auction Authentication Management  
+        summary: login of user
+        description: To login in auction application
+        operationId: login User
+        requestBody:
+          description: Model to Login User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginRequestBody'     
+        responses:
+          200:
+            description: "Success Response"
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/LoginSuccessResponse"
+          204:
+            description: "No Content"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          400:
+           description: "Bad Request"
+           content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+          401:
+           description: "Unauthorized"
+           content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+          403:
+           description: "Forbidden"
+           content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+          404:
+           description: "Page Not Found"
+           content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent" 
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"
+  /auth/confirm-user: 
+    post:
+        tags:
+        - Auction Authentication Management  
+        summary: confirm sign up of user
+        description: To approve or deny the team owner
+        operationId: confirm-user User
+        parameters:
+            - in: query
+              name: flag
+              required: true
+              schema:
+               type: boolean
+        requestBody:
+          description: Model to confirm User
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfirmUserRequestBody'            
+        responses:
+          200:
+             description: "Success Response"
+             headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+             content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/LoginSuccessResponse"
+          204:
+            description: "No Content"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          401:
+            description: "Unauthorized"
+            content:
+             application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+          403:
+           description: "Forbidden"
+           content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+          404:
+           description: "Page Not Found"
+           content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent" 
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"
+  /auth/requestToRegister: 
+    get:
+        tags:
+        - Auction Authentication Management  
+        summary: request for sign-up
+        description: Listing the user from cognito
+        operationId: requestToRegister Team Owner     
+        responses:
+          200:
+            description: "Success Response"
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/RequestToRegisterSuccessResponse"
+          204:
+            description: "No Content"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          400:
+           description: "Bad Request"
+           content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+          401:
+           description: "Unauthorized"
+           content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+          403:
+           description: "Forbidden"
+           content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+          404:
+           description: "Page Not Found"
+           content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent" 
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"                               
+  /auth/dashboard: 
+    get:
+      tags:
+      - Redirect User 
+      summary: Redirect User based on user type
+      description: To get user path.
+      operationId: getUsersDashboard
+      responses:
+        200:
+          description: "Get Dahsboard"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: "Page Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+  /auth/forgot-password: 
+    put:
+        tags:
+        - Forgot Password Management  
+        summary: request for sign-OTP
+        description: Get OTP for forgot password
+        operationId: forgotPassword users  
+        requestBody:
+          description: email to send OTP
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/RequestForgotPassword"
+        responses:
+          200:
+            description: "Success Response"
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ResponseForgotPassword"
+          204:
+            description: "No Content"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NotFound"       
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          401:
+            description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Unauthorized"
+          404:
+            description: "User Not Found"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"
+  
+  /auth/reset-password: 
+    post:
+        tags:
+        - Reset Password Management  
+        summary: Reset password for user
+        description: reset password
+        operationId: resetPassword for users  
+        requestBody:
+          description: email, password and confirmation Code to reset password.
+          content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/RequestResetPassword"
+        responses:
+          200:
+            description: "Success Response"
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ResetPasswordResponse"
+          204:
+            description: "No Content"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          401:
+            description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Unauthorized"
+          404:
+            description: "User Not Found"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NotFound"
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"
+
+components:
+  schemas:
+    updateResponse:
+      type: object
+      properties:
+        auction_id:
+          type: integer
+
+    InternalServerError:
+      title: Internal server error occurred
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error
+    Unauthorized:
+      title: Unauthorized
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unauthorized
+    Forbidden:
+      title: Forbidden
+      type: object
+      properties:
+        message:
+          type: string
+          example: Forbidden
+    NoContent:
+      title: NoContent
+      type: object
+      properties:
+        message:
+          type: string
+          example: No Content
+    BadRequest:
+      title: Invalid input parameters
+      type: object
+      properties:
+        message:
+          type: string
+          example: Bad Request         
+    SignupRequestBody:
+      type: object
+      properties:
+        name:
+          type: string
+          example: "auctionuser101"
+        email:
+          type: string
+          example: "auctionuser@gmail.com"
+        password:
+          type: string
+          example: "Marvel@123"
+        phone:
+          type: string
+          example: "+918765768954"
+    SignupResponseBody:
+      title: Successfully Registered
+      type: object
+      properties:
+        message:
+          type: string
+          example: User Registered Successfully  
+    LoginRequestBody:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "auctionuser@gmail.com"
+        password:
+          type: string
+          example: "Marvel@123"
+    LoginSuccessResponse:
+      type: object
+      properties:
+        accessToken:
+          type: string
+        idToken:
+          type: string
+        refereshToken:
+          type: string
+    ConfirmUserRequestBody:
+      type: object
+      properties:
+        email:
+          type: string
+          example: "auctionuser@gmail.com"
+        flag:
+          type: string
+          example: "Approve" 
+    ConfirmUserResponseBody:
+      title: Successfully Approved
+      type: object
+      properties:
+        message:
+          type: string
+          example: User Approved
+    RequestToRegisterSuccessResponse: 
+          type: array
+          items: 
+            type: object 
+            properties:
+              name:
+                type: string
+                example: "hardik jain"
+              email:
+                type: string
+                example: "hardik@gmail.com"
+    NotFound:
+      title: NotFound
+      type: object
+      properties:
+        message:
+          type: string
+          example: Not Found
+    RequestForgotPassword:  
+      type: object
+      properties: 
+        email: 
+          type: string
+          example: "ajay@gmail.com"        
+    ResponseForgotPassword:  
+      type: object
+      properties: 
+        message: 
+          type: string
+          example: "verification code sent"
+    RequestResetPassword:
+      type: object
+      properties:
+        email: 
+          type: string
+          example: "ajay@gmail.com"
+        password: 
+          type: string
+          example: "Ajay@123"
+        confirmation_code:
+          type: string
+          example: "DHDKEU12"
+    ResetPasswordResponse:
+      type: object
+      properties: 
+        message: 
+          type: string
+          example: "Password Changed Successfully"        
+
+                

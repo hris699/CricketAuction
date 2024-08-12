@@ -1,0 +1,604 @@
+openapi: '3.0.0'
+info:
+    title: Team-Swagger 
+    version: 1.0.0
+    description: An swagger documentation for Team MicroService
+    termsOfService: http://swagger.io/terms/
+    license:
+      name: Apache 2.0
+      url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://{base_url}/{env_id}
+    variables:
+      base_url:
+        default: localhost:8082
+        description: server
+      env_id:
+        default: api
+        description: path selector
+
+paths:
+  /teams:
+    get:
+      description: Returns all Teams
+      tags:
+        - Manage Teams
+      operationId: findTeams
+      responses:
+        200:
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Team"
+        204:
+          description: "No Content"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        404:
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        500:
+          description: "Internal Server Error"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+    post:
+      tags:
+        - Create team
+      description: Creates a new team.
+      requestBody:
+        required: true
+        description: team to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Team'    
+      responses:
+        200:
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            multipart/form-data:
+              schema:
+                $ref: "#/components/schemas/Team"
+        204:
+          description: "No Content"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        500:
+          description: "Internal Server Error"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+ 
+    
+  /teams/{team_id}:
+    get:
+      tags:
+        - Get teams by id
+      description: Get team.
+      parameters:
+        - name: team_id
+          in: path
+          required: true
+          description: The ID of the user to return.
+          schema:
+            type: integer
+      responses:
+         200:
+          description: A team's object
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  team_id:
+                    type: integer
+                    format: int64
+                    example: 4
+                  team_user_id:
+                    type: integer
+                    format: int64
+                    example: 4  
+                  team_name:
+                    type: string
+                    example: Anshu Sharma
+                  team_owner_name:
+                    type: string
+                    example: Anshu
+                  team_logo:    
+                    type: string
+                    example: url
+         400:
+          description: The specified user ID is invalid (not a number).
+         404:
+          description: A user with the specified ID was not found.
+         default:
+          description: Unexpected error  
+  
+    put:
+        tags:
+          - Update team 
+        description: Updates a team.
+        # operationId: updateGroupById
+        parameters:
+          - in: path
+            name: team_id
+            required: true
+            schema:
+              type: integer
+        requestBody:
+          description: team to be updated
+          required: true
+          content:
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/UpdateTeam'
+        responses:
+          200:
+            description: OK
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/UpdateTeam"
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          404:
+            description: Team not found
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"    
+    
+  /teams/{team_id}/auctions:
+    get:
+        tags:
+          - Manage Teams 
+        description: Get teams associated with auctions.
+        parameters:
+          - in: path
+            name: team_id
+            required: true
+            schema:
+              type: integer
+        responses:
+          200:
+            description: OK
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/TeamAuctionSuccessResponse"
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          404:
+            description: Team not found
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"
+    delete:
+        tags:
+          - Manage Teams 
+        description: Deletes a team.
+        parameters:
+          - in: path
+            name: team_id
+            required: true
+            schema:
+              type: integer
+          - in: query
+            name: auction_id
+            required: true
+            schema:
+              type: string
+              items:
+                type: integer
+          - in: query
+            name: start_time
+            required: true
+            schema:
+              type: string
+              items:
+                type: integer
+        responses:
+          200:
+            description: OK
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/DeleteResponse"
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          404:
+            description: Team not found
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"
+
+  /teams/details:
+    post:
+      description: Returns all Team details based on ids
+      tags:
+        - Manage Teams
+      operationId: getTeamByIds
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamDetailResponse"
+        400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+        404:
+          description: Team not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"                                               
+  /users/{user_id}/teams:
+    get:
+        tags:
+          - Manage Teams 
+        description: Get teams associated with user.
+        parameters:
+          - in: path
+            name: user_id
+            required: true
+            schema:
+              type: string
+        responses:
+          200:
+            description: OK
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/TeamAuctionSuccessResponse"
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          404:
+            description: Team not found
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"            
+components:
+  schemas:
+    Empty:
+      title: "Empty Schema"
+      type: "object"
+   
+    Team:
+      required:
+        - team_user_id
+        - team_name
+        - team_owner_name
+      type: object
+ 
+      properties:
+        team_user_id:
+          type: string
+          example: "abc123"
+        team_name:
+          type: string
+          minimum: 3
+          maximum: 45
+          example: "Anshu"
+        team_owner_name:
+          type: string
+          minimum: 3
+          maximum: 45
+          example: "Anshu"
+        team_logo:
+          type: string
+          format: binary
+          
+ 
+    UpdateTeam:
+      type: object
+      properties:
+        team_name:
+          type: string
+          minimum: 3
+          maximum: 45
+          example: "Anshu"
+        team_owner_name:
+          type: string
+          minimum: 3
+          maximum: 45
+          example: "Anshu"
+        team_logo:
+          type: string
+
+    InternalServerError:
+      title: Internal server error occurred
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error
+    Unauthorized:
+      title: Unauthorized
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unauthorized
+    NoContent:
+      title: NoContent
+      type: object
+      properties:
+        message:
+          type: string
+          example: No Content
+    BadRequest:
+      title: Invalid input parameters
+      type: object
+      properties:
+        message:
+          type: string
+          example: Bad Request
+    UpdatedSuccessfully:
+      title: Successfully Updated
+      type: object
+      properties:
+        message:
+          type: string
+          example: Updated Successfully
+    TeamAuctionResponse:
+      properties:
+        response:
+          type: array
+          items: 
+            type: object 
+            properties:
+              auctionId:
+                type: integer
+                example: 1
+              auctionName:
+                type: string
+                example: "any auction name"
+              auctionStartTime:
+                type: string
+                example: "2020-10-04T17:42:49"
+              teamStatus:
+                type: string
+                enum: ["pending","accepted","denied"] 
+    DeleteResponse:
+      title: Successfully Deleted
+      type: object
+      properties:
+        message:
+          type: string
+          example: Deleted Successfully
+    TeamAuctionSuccessResponse:
+      properties:
+        response:
+          type: array
+          items: 
+            type: object
+            properties:
+              team_id:
+                type: integer
+                example: 1
+              team_name:
+                type: string
+                example: "CSK"
+                
+    TeamDetailResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Deleted Successfully
+                        

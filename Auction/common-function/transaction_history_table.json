@@ -1,0 +1,9 @@
+{
+    "TRANSACTION_ID":"th_transaction_id",
+    "AUCTION_ID":"th_auction_id",
+    "TEAM_ID":"th_team_id",
+    "PLAYER_ID":"th_player_id",
+    "FINAL_PRICE":"th_final_price",
+    "INITIAL_PURSE_VALUE":"th_initial_purse_value",
+    "FINAL_PURSE_VALUE":"th_final_purse_value"
+}

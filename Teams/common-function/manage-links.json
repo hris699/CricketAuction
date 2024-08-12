@@ -1,0 +1,64 @@
+{
+   
+    "admin": [
+        {
+            "methodType": "GET",
+            "link": "/teams"
+        },
+        {
+            "methodType": "GET",
+            "link": "/teams/:team_id"
+        },
+        {    
+            "methodType": "GET",
+            "link": "/teams/users/links"
+        },
+        {
+            "methodType": "GET",
+            "link": "/users/:user_id/teams"
+        } 
+    ],
+ 
+    "public-user": [
+        {
+            "methodType": "POST",
+            "link": "/teams/details"
+        }
+        
+    ],
+    "user": [
+        {
+            "methodType": "GET",
+            "link": "/teams"
+        },
+        {
+            "methodType": "GET",
+            "link": "/teams/:team_id"
+        },
+        {
+            "methodType": "POST",
+            "link": "/teams"
+        },
+        {
+            "methodType": "PUT",
+            "link": "/teams/:team_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/teams/:team_id/auctions"
+        },
+        {
+            "methodType": "DELETE",
+            "link": "/teams/:team_id/auctions"
+        },
+        {
+            "methodType": "GET",
+            "link": "/users/:user_id/teams"
+        },
+        {
+            "methodType": "GET",
+            "link": "/teams/users/links"
+        }
+    ]
+ 
+}

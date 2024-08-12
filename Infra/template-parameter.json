@@ -1,0 +1,21 @@
+{
+    "Parameters" : {
+        
+            "CodeBuildRole": "CDK_CodeBuild_Role",
+            "CodePipelineRole":"AWSCodePipelineServiceRole-us-east-2-UAS-Auction",
+            "SourceCodeRepoName": "UAS_AUCTION",
+            "ArtifactStoreS3Location": "auction-system-artifact",
+            "ECSStackUrl": "https://auction-system-artifact.s3.us-east-2.amazonaws.com/auctionSystemECS.yaml",
+            "SubnetId1": "subnet-01598f5327881f88a",
+            "SubnetId2": "subnet-07ea61c822cfc29bd",
+            "TaskDefName": "uas_auction-1",
+            "ECSTaskExecutionRole": "ecsTaskExecutionRole",
+            "ContainerName": "auction",
+            "ContainerImage": "094853031708.dkr.ecr.us-east-2.amazonaws.com/auction_system:auction",
+            "ContainerPort": "8080",
+            "ContainerHostPort": "8080",
+            "ECSClusterName": "universal-auction-system"
+          
+      
+    }
+}

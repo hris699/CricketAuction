@@ -1,0 +1,8 @@
+{
+    "AUCTION_ID":"ap_auction_id",
+    "PLAYER_ID":"ap_player_id",
+    "TEAM_ID":"ap_team_id",
+    "SOLD_STATUS":"ap_sold_status",
+    "BASE_VALUE":"ap_base_value",
+    "SOLD_VALUE":"ap_sold_value"
+}

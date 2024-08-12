@@ -1,0 +1,135 @@
+{
+    
+    "admin": [
+        {
+            "methodType": "POST",
+            "link": "/auctions"
+        },
+        {
+            "methodType": "PUT",
+            "link": "/auctions/:auction_id"
+        },
+        {
+            "methodType": "DELETE",
+            "link": "/auctions/:auction_id/players"
+        },
+        {
+            "methodType": "DELETE",
+            "link": "/auctions/:auction_id"
+        },
+        {
+            "methodType": "PUT",
+            "link": "/auctions/:auction_id/register/status"
+        },
+        {
+            "methodType": "POST",
+            "link": "/auctions/:auction_id/players"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/auction/detail/:auction_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/team/:team_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/teams/teamRequests"
+        },
+        {
+            "methodType": "DELETE",
+            "link": "/auctions/:auction_id/players/:player_id"
+        },
+        {
+            "methodType": "DELETE",
+            "link": "/auctions/players/:player_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/links"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/:auction_id/teams/:team_id/players"
+        }
+    ],
+
+    "public-user": [
+        {
+            "methodType": "GET",
+            "link": "/auctions"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/auction_detail/:auction_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/:auction_id/players/status"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/players/:player_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/:auction_id/users/:user_id/teams"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/auction/detail/:auction_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/:auction_id/teams"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/player_detail/:auction_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/team_detail/:auction_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/ongoingAuction"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/auction/detail/:auction_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/:auction_id/teams/:team_id/players"
+        }
+        
+    ],
+    "user": [
+        {
+            "methodType": "POST",
+            "link": "/auctions/:auction_id/register"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/team/:team_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/teams/:team_id"
+        },
+        {
+            "methodType": "DELETE",
+            "link": "/auctions/teams/:team_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/links"
+        },
+        {
+            "methodType": "GET",
+            "link": "/auctions/:auction_id/teams/:team_id/players"
+        }
+    ]
+}

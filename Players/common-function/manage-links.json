@@ -1,0 +1,54 @@
+{
+   
+    "admin": [
+        {
+            "methodType": "GET",
+            "link": "/players"
+        },
+        {
+            "methodType": "POST",
+            "link": "/players"
+        },
+        {
+            "methodType": "PUT",
+            "link": "/players/:player_id"
+        },
+        {
+            "methodType": "GET",
+            "link": "/players/:player_id/auctions"
+        },
+        {
+            "methodType": "DELETE",
+            "link": "/players/:player_id/auctions"
+        },
+        {
+            "methodType": "POST",
+            "link": "/players/details"
+        },
+        {
+            "methodType": "GET",
+            "link": "/players/links"
+        }
+       
+    ],
+ 
+    "public-user": [
+        
+        {
+            "methodType": "POST",
+            "link": "/players/details"
+        }
+    ],
+    "user": [
+        {
+            "methodType": "GET",
+            "link": "/players"
+        },
+        {
+            "methodType": "GET",
+            "link": "/players/links"
+        }
+       
+    ]
+ 
+}

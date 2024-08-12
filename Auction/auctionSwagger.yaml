@@ -1,0 +1,2072 @@
+openapi: '3.0.0'
+info:
+  version: 3.0.0
+  title: Auction API's
+  description: A sample API
+  contact:
+      name: API Support
+      email: sunil.m@yash.com
+  termsOfService: http://swagger.io/terms/
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://{base_url}/{env_id}
+    variables:
+      base_url:
+        default: localhost:8080
+        description: server
+      env_id:
+        default: api
+        description: path selector
+paths:
+  /auctions:
+    get:
+      tags:
+      - Auction Management 
+      summary: Returns all Auctions
+      description: To get list of all Auction.
+      operationId: getListOfAllAuction
+      responses:
+        200:
+          description: "List of All Auction"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ListAuctionResponseBody"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+            description: "Forbidden"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Forbidden"
+        404:
+          description: "Page Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+      # security:
+      # - AuctionAuthorizer: []
+    
+    post:
+      tags:
+      - Auction Management 
+      summary: Create New Auction 
+      description: To Create New Auction.
+      operationId: addAuction
+      requestBody:
+        description: Model to post auction details
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AuctionRequestBody'     
+      responses:
+        200:
+          description: "Auction Created With Following values"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuctionResponseBody"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+            description: "Forbidden"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Forbidden"
+        404:
+          description: "Page Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+      security:
+      - AuctionAuthorizer: []
+
+  /auctions/{auction_id}:
+    put:
+        tags:
+        - Auction Management  
+        summary: Update Auction details
+        description: To Update auction details for specific auction
+        operationId: updateAuctionDetails
+        parameters:
+        - in: path
+          name: auction_id
+          required: true
+          schema:
+            type: integer
+        requestBody:
+          description: Model to update Auction Data
+          content:
+            multipart/form-data:
+              schema:
+                $ref: '#/components/schemas/updateResponse'     
+        responses:
+          200:
+            description: "Success Response"
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/UpdatedSuccessfully"
+          204:
+            description: "No Content"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          401:
+            description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Unauthorized"
+          403:
+            description: "Forbidden"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Forbidden"
+          404:
+            description: "Page Not Found"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NotFound"
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"
+        security:
+        - AuctionAuthorizer: []
+
+    delete:
+      tags:
+        - Auction Management
+      description: Delete an Auction.
+      parameters:
+        - in: path
+          name: auction_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeletedSuccessfully"
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: "Page Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+  # /auctions/{auction_id}/players:
+    # post:
+    #     tags:
+    #     - Auction Player Management 
+    #     summary: add new Player In Auction 
+    #     description: To add New Player in Auction.
+    #     operationId: addAuctionPlayer
+    #     parameters:
+    #     - in: path
+    #       name: auction_id
+    #       required: true
+    #       schema:
+    #         type: integer
+    #     requestBody:
+    #       description: Model to post auction player details
+    #       content:
+    #         application/json:
+    #           schema:
+    #             $ref: '#/components/schemas/AuctionPlayerRequestBody'     
+    #     responses:
+    #       200:
+    #         description: "Auction Player Created With Following values"
+    #         headers:
+    #           Access-Control-Allow-Origin:
+    #             schema:
+    #               type: "string"
+    #         content:
+    #           application/json:
+    #             schema:
+    #               $ref: "#/components/schemas/AuctionPlayerResponseBody"
+    #       204:
+    #         description: "No Content"
+    #         content:
+    #           application/json:
+    #             schema:
+    #               $ref: "#/components/schemas/NoContent"        
+    #       400:
+    #         description: "Bad Request"
+    #         content:
+    #           application/json:
+    #             schema:
+    #               $ref: "#/components/schemas/BadRequest"
+    #       401:
+    #         description: "Unauthorized"
+    #         content:
+    #           application/json:
+    #             schema:
+    #               $ref: "#/components/schemas/Unauthorized"
+    #       403:
+    #         description: "Forbidden"
+    #         content:
+    #           application/json:
+    #             schema:
+    #               $ref: "#/components/schemas/Forbidden"
+    #       404:
+    #         description: "Page Not Found"
+    #         content:
+    #           application/json:
+    #             schema:
+    #               $ref: "#/components/schemas/NotFound"        
+    #       500:
+    #         description: "Internal Server Error"
+    #         content:
+    #           application/json:
+    #             schema:
+    #               $ref: "#/components/schemas/InternalServerError"
+    #     security:
+    #     - AuctionAuthorizer: []
+
+  /auctions/{auction_id}/players:
+    post:
+        tags:
+        - Auction Player Management 
+        summary: Add Selected Players In Auction 
+        description: To add Selected Players in Auction.
+        operationId: addSelectedPlayersInAuction
+        parameters:
+        - in: path
+          name: auction_id
+          required: true
+          schema:
+            type: integer
+        requestBody:
+          description: Model to post selected player details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelectAuctionPlayerRequestBody'     
+        responses:
+          200:
+            description: "Selected Player Created In Auction With Following values"
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/SelectAuctionPlayerResponseBody"
+          204:
+            description: "No Content"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          401:
+            description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Unauthorized"
+          403:
+            description: "Forbidden"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Forbidden"
+          404:
+            description: "Page Not Found"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NotFound"        
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"
+        security:
+        - AuctionAuthorizer: []
+
+  /auctions/{auction_id}/register:
+    post:
+        tags:
+        - Auction Team Management 
+        summary: request to add team to auction
+        description: To add New Team in Auction.
+        operationId: requestToRegister
+        parameters:
+        - in: path
+          name: auction_id
+          required: true
+          schema:
+            type: integer
+        requestBody:
+          description: Model to post auction team details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuctionTeamRequestBody'     
+        responses:
+          200:
+            description: "Auction Team has requested to register"
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/AuctionTeamResponseBody"
+          204:
+            description: "No Content"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          401:
+            description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Unauthorized"
+          403:
+            description: "Forbidden"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Forbidden"
+          404:
+            description: "Page Not Found"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NotFound"        
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"
+
+  /auctions/{auction_id}/players/{player_id}:
+    delete:
+        tags:
+        - Auction Player Management 
+        summary: Delete Player In Auction 
+        description: To delete a Player from Auction.
+        operationId: deleteAuctionPlayer
+        parameters:
+        - in: path
+          name: player_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: auction_id
+          required: true
+          schema:
+            type: integer
+        responses:
+          200:
+            description: "Auction Player Deleted"
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/AuctionPlayerDeleted"
+          204:
+            description: "No Content"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          401:
+            description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Unauthorized"
+          403:
+            description: "Forbidden"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Forbidden"
+          404:
+            description: "Page Not Found"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NotFound"        
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"                
+
+  /auctions/auction_detail/{auction_id}:
+    get:
+      tags:
+      - Auction Management 
+      summary: Returns auction detail
+      description: To get details of a specific auction.
+      operationId: getAuctionDetails
+      parameters:
+        - in: path
+          name: auction_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "Get auction details"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuctionResponseBody"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: "Page Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"        
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+  /auctions/ongoingAuction:
+    get:
+      tags:
+      - Auction Management 
+      summary: Returns ongoing auction detail
+      description: To get details of a ongoing auction.
+      operationId: get ongoingAuction
+      responses:
+        200:
+          description: "Get auction details"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OngoingAuctionResponseBody"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: "Page Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"        
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"              
+
+  /auctions/{auction_id}/register/status:
+    put:
+        tags:
+        - Auction Team Management 
+        summary: approve/deny request to add team to auction
+        description: To approve/deny add New Team in Auction.
+        operationId: registerRequestStatus
+        parameters:
+        - in: path
+          name: auction_id
+          required: true
+          schema:
+            type: integer
+        requestBody:
+          description: Model to post auction team details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamStatusRequestBody" 
+        responses:
+          200:
+            description: "Success Response"
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/UpdatedSuccessfully"
+          204:
+            description: "No Content"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          401:
+            description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Unauthorized"
+          403:
+            description: "Forbidden"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Forbidden"
+          404:
+            description: "Page Not Found"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NotFound"
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"       
+
+  /auctions/{auction_id}/players/status:
+    get:
+      tags:
+      - Bidding 
+      summary: Returns list of unsold Players
+      description: To get details of specific players.
+      operationId: getListOfUnsoldPlayers
+      parameters:
+      - in: path
+        name: auction_id
+        required: true
+        schema:
+         type: integer  
+      - in: query
+        name: sold_status
+        required: true
+        schema:
+         type: string
+      responses:
+        200:
+          description: "Get auction details"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayersList"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: "Page Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"        
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError" 
+
+  /auctions/team/{team_id}:
+    get:
+      tags:
+        - Get auctions by teamid
+      description: Get auctions by team id.
+      parameters:
+        - name: team_id
+          in: path
+          required: true
+          description: The ID of the user to return.
+          schema:
+            type: integer
+      responses:                           
+        200:
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuctionsTeamResponseBody"        
+        401:
+          description: "Unauthorized"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        404:
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        500:
+          description: "Internal Server Error"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+  /auctions/team_detail/{auction_id}:
+    get:
+      tags:
+      - Auction Management 
+      summary: Returns teams detail associated to an auction
+      description: To get details of teams in auction.
+      operationId: getTeamDetails
+      parameters:
+        - in: path
+          name: auction_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "Get teams details"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/TeamDetailResponse"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: "Page Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+  /auctions/player_detail/{auction_id}:
+    get:
+      tags:
+      - Auction Management 
+      summary: Returns players detail associated to an auction
+      description: To get details of players in auction.
+      operationId: getPlayerDetails
+      parameters:
+        - in: path
+          name: auction_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: "Get player details"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayerDetailResponse"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: "Page Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"   
+
+  /auctions/teams/{team_id}:
+    get:
+      tags:
+      - Auction Team Management 
+      summary: Returns details of teams in auctions
+      description: To get details of teams in auctions.
+      operationId: getTeamsInAuctions
+      parameters:
+      - in: path
+        name: team_id
+        required: true
+        schema:
+         type: integer
+      responses:
+        200:
+          description: "Get details of team in auctions"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: boolean
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuctionTeamResponse"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+            description: "Forbidden"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Forbidden"
+        404:
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+    delete:
+        tags:
+        - Auction Team Management 
+        summary: Delete Team In Auction 
+        description: To delete a Team Auction association.
+        operationId: deleteTeamAuction
+        parameters:
+        - in: path
+          name: team_id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: auction_id
+          required: true
+          schema:
+            type: string
+            items:
+              type: integer
+        responses:
+          200:
+            description: "Auction Team Deleted"
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/AuctionTeamDeleted"
+          204:
+            description: "No Content"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          401:
+            description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Unauthorized"
+          403:
+            description: "Forbidden"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Forbidden"
+          404:
+            description: "Page Not Found"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError" 
+  /auctions/{auction_id}/users/{user_id}/teams:
+    get:
+      tags:
+      - Auction Management 
+      summary: Returns team detail for auction
+      description: To get details of team for a specific auction and user_id.
+      operationId: getTeamDetailsByAuctionAndUser
+      parameters:
+        - in: path
+          name: auction_id
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: user_id
+          required: true
+          schema:
+            type: string    
+      responses:
+        200:
+          description: "Get team details"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuctionResponseBody"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: "Page Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"        
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+  /auctions/players/{player_id}:
+    get:
+      tags:
+      - Auction Player Management 
+      summary: Returns details of players in auctions
+      description: To get details of players in auctions.
+      operationId: getPlayersInAuctions
+      parameters:
+      - in: path
+        name: player_id
+        required: true
+        schema:
+         type: integer
+      responses:
+        200:
+          description: "Get details of player in auctions"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: boolean
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuctionPlayerResponseBody"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+            description: "Forbidden"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Forbidden"
+        404:
+          description: Player not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+    delete:
+        tags:
+        - Auction Player Management 
+        summary: Delete Player In Auction 
+        description: To delete a Player Auction association.
+        operationId: deletePlayerAuction
+        parameters:
+        - in: path
+          name: player_id
+          required: true
+          schema:
+            type: integer
+        - in: query
+          name: auction_id
+          required: true
+          schema:
+            type: string
+            items:
+              type: integer
+        responses:
+          200:
+            description: "Auction Player Deleted"
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/AuctionPlayerDeleted"
+          204:
+            description: "No Content"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          401:
+            description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Unauthorized"
+          403:
+            description: "Forbidden"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Forbidden"
+          404:
+            description: "Player Not Found"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoContent"        
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"              
+
+  /auctions/{auction_id}/teams:
+    get:
+      tags:
+        - Get teams and their details by auction id
+      description: Get teams details by auction id
+      parameters:
+        - name: auction_id
+          in: path
+          required: true
+          description: The ID of the user to return.
+          schema:
+            type: integer
+      responses:                           
+        200:
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuctionsTeamDetailsResponseBody"        
+        401:
+          description: "Unauthorized"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        404:
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        500:
+          description: "Internal Server Error"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError" 
+
+  /auctions/auction/detail/{auction_id}:
+    get:
+      tags:
+        - Get auction related details by auctionid
+      description: Get auction's details by auction id.
+      parameters:
+        - name: auction_id
+          in: path
+          required: true
+          description: The ID of the user to return.
+          schema:
+            type: integer
+      responses:                           
+        200:
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuctionsDetailsResponseBody"        
+        401:
+          description: "Unauthorized"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        404:
+          description: Group not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        500:
+          description: "Internal Server Error"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"                  
+
+  /auctions/teams/teamRequests:
+    get:
+      tags:
+        - Get Pending Team Requests for Applied Auctions
+      description: Get pending team Requests.
+      responses:                           
+        200:
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuctionsPendingRequestResponseBody"        
+        401:
+          description: "Unauthorized"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        404:
+          description: Request not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"
+        500:
+          description: "Internal Server Error"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+  /auctions/{auction_id}/teams/{team_id}/players:
+    get:
+      tags:
+      - players
+      summary: Returns list of sold Players in  a team according to auction
+      description: To get details of specific players.
+      operationId: getListOfsoldPlayers
+      parameters:
+      - in: path
+        name: auction_id
+        required: true
+        schema:
+         type: integer  
+      - in: path
+        name: team_id
+        required: true
+        schema:
+         type: integer
+      responses:
+        200:
+          description: "Get auction details"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PlayersListTeam"
+        204:
+          description: "No Content"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoContent"        
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        403:
+          description: "Forbidden"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Forbidden"
+        404:
+          description: "Page Not Found"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NotFound"        
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError" 
+
+components:
+  schemas:
+    updateResponse:
+      type: object
+      properties:
+        auction_id:
+          type: integer
+
+    InternalServerError:
+      title: Internal server error occurred
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error      
+    Unauthorized:
+      title: Unauthorized
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unauthorized
+    Forbidden:
+      title: Forbidden
+      type: object
+      properties:
+        message:
+          type: string
+          example: Forbidden
+    NoContent:
+      title: NoContent
+      type: object
+      properties:
+        message:
+          type: string
+          example: No Content
+    BadRequest:
+      title: Invalid input parameters
+      type: object
+      properties:
+        message:
+          type: string
+          example: Bad Request
+    UpdatedSuccessfully:
+      title: Successfully Updated
+      type: object
+      properties:
+        message:
+          type: string
+          example: Updated Successfully 
+    DeletedSuccessfully:
+      title: Deleted Successfully
+      type: object
+      properties:
+        message:
+          type: string
+          example: Auction deleted successfully        
+
+    AuctionRequestBody:
+      type: object
+      properties:
+        auction_id:
+          type: integer
+        auction_name:
+          type: string
+        start_time:
+          type: string
+          example: "2020-10-04T17:42:49"
+        end_time:
+          type: string
+          example: "2020-11-01T17:42:49"
+        no_of_teams:
+          type: string
+        min_team_size:
+          type: string
+        max_team_size:
+          type: string        
+        purse_value:
+          type: string
+        is_deleted:
+          type: boolean
+        auction_country:
+          type: string
+          example: "India"
+        auction_description:
+          type: string
+          example: "T20 Auction"
+        auction_image:
+          type: string
+          format: binary
+
+    ListAuctionResponseBody:
+          type: object
+          properties:
+            auction_name:
+              type: string
+            start_time:
+              type: string
+              example: "2020-10-04T17:42:49"
+            end_time:
+              type: string
+              example: "2020-11-01T17:42:49"
+            no_of_teams:
+              type: integer
+            min_team_size:
+              type: integer
+            max_team_size:
+              type: integer
+            purse_value:
+              type: integer 
+
+    AuctionResponseBody:
+      type: object
+      properties:
+        auction_id:
+          type: integer
+        auction_name:
+          type: string
+        no_of_teams:
+          type: integer
+        min_team_size:
+          type: integer
+        max_team_size:
+          type: integer
+        purse_value:
+          type: integer
+        is_deleted:
+          type: boolean 
+
+    AuctionPlayerRequestBody:
+      type: object
+      properties:
+        player_id:
+          type: integer
+          example: 101
+        base_value:
+          type: integer
+          example: 400000
+
+    AuctionPlayerDeleted:
+      title: Successfully Deleted
+      type: object
+      properties:
+        message:
+          type: string
+          example: Player Deleted Successfully 
+
+    AuctionPlayerResponseBody:
+      type: object
+      properties:
+        auction_id:
+          type: integer
+          example: 1
+        player_id:
+          type: integer
+          example: 101
+        team_id:
+          type: integer
+          example: 201
+        sold_status:
+          type: string
+          example: "Unsold"
+        base_value:
+          type: integer
+          example: 400000
+        sold_value:
+          type: integer
+          example: 800000
+
+    SelectAuctionPlayerRequestBody:
+      type: object
+      properties:
+        selected_players:
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              player_id:
+                type: integer
+                example: 101
+              base_value:
+                type: integer
+                example: 400000
+
+    SelectAuctionPlayerResponseBody:
+      type: "array"
+      items:
+        type: "object"
+        properties:
+          auction_id:
+            type: integer
+            example: 1
+          player_id:
+            type: integer
+            example: 101
+          team_id:
+            type: integer
+            example: 201
+          sold_status:
+            type: string
+            example: "Pending"
+          base_value:
+            type: integer
+            example: 400000
+          sold_value:
+            type: integer
+            example: 800000
+
+    AuctionTeamRequestBody:
+      type: object
+      properties:
+        at_team_id:
+          type: integer
+          example: 1       
+
+    AuctionTeamResponseBody:
+      type: object
+      properties:
+        at_auction_id:
+          type: integer
+          example: 1
+        at_team_id:
+          type: integer
+          example: 201
+        at_approval_status:
+          type: string
+          example: "pending"
+
+    AuctionsTeamDetailsResponseBody:
+      properties:
+        response:
+          type: array
+          items: 
+            type: object 
+            properties:
+              team_id: 
+                type: integer
+                example: 1
+              team_name: 
+                type: string
+                example: "KKR"
+              team_logo: 
+                type: string
+                example: "kkr.jfif"
+              team_bought_players: 
+                type: integer
+                example: 1
+              team_wallet_balance: 
+                type: integer
+                example: 23000
+
+    TeamStatusRequestBody:
+      type: object
+      properties:
+        at_team_id:
+          type: integer
+          example: 1 
+        at_approval_status:
+          type: string
+          enum: ["pending","accepted","denied"]      
+
+    PlayersList:
+        type: object
+        properties:
+          response:
+            type: array
+            items: 
+              type: object 
+              properties:
+                auction_id:
+                  type: integer
+                  example: 1
+                player_id:
+                  type: integer
+                  example: 101
+                team_id:
+                  type: integer
+                  example: 201
+                sold_status:
+                  type: string
+                  example: "Unsold"
+                base_value:
+                  type: integer
+                  example: 400000
+                sold_value:
+                  type: integer
+                  example: 800000       
+
+    PlayersListTeam:
+        type: object
+        properties:
+          response:
+            type: array
+            items: 
+              type: object 
+              properties:
+                p_id:
+                  type: integer
+                  example: 1
+                p_name:
+                  type: string
+                  example: 101
+                p_email:
+                  type: string
+                  example: example@gmail.com
+                p_age:
+                  type: integer
+                  example: 34
+                p_contact:
+                  type: integer
+                  example: 2345676533
+                p_image:
+                  type: string
+                  example: url
+                p_type:
+                  type: string
+                  example: "Wicket-Keeper"
+                p_is_deleted: 
+                  type: integer
+                  example: 0,
+                created_at: 
+                  type: string
+                  example: "2023-12-14T10:34:48.000Z"
+                updated_at:
+                  type: string
+                  example: "2023-12-14T10:34:48.000Z"
+                base_value:
+                  type: integer
+                  example: 400000
+                sold_value:
+                  type: integer
+                  example: 800000 
+
+    playerList:
+      type: object
+      properties:
+        response:
+          type: array
+          items: 
+            type: object 
+            properties:
+              auction_id:
+                type: integer
+                example: 1
+              player_id:
+                type: integer
+                example: 101
+              team_id:
+                type: integer
+                example: 201
+              sold_status:
+                type: string
+                example: "Unsold"
+              base_value:
+                type: integer
+                example: 400000
+              sold_value:
+                type: integer
+                example: 800000 
+    
+    AuctionsDetailsResponseBody:
+      type: object
+      properties:
+        at_team_id:
+          type: integer
+          example: 1 
+        auction_name: 
+          type: string 
+          example: auction
+        auction_country:
+          type: string
+          example: india
+        auction_players: 
+          type: integer 
+          example: 2 
+        sold_players: 
+          type: integer 
+          example: 1 
+        unsold_players: 
+          type: integer 
+          example: 1 
+        total_money_spent: 
+          type: integer
+          example: 20000000
+          
+    AuctionsTeamResponseBody:
+      properties:
+        response:
+          type: array
+          items: 
+            type: object 
+            properties:
+              auction_name:
+                type: string
+                example: "any auction name"
+              auction_team_current_wallet:
+                type: integer
+                example: 10000 
+
+    PlayerDetailResponse:
+      properties:
+        response:
+          type: array
+          items: 
+            type: object
+            properties:
+              player_name:
+                type: string
+                example: "Name"
+              player_email:
+                type: string
+                example: "name@gmail.com"
+              player_age:
+                type: integer
+                example: 20
+              player_contact:
+                type: integer
+                example: 8982315022
+              player_type:
+                type: string
+                enum: ["batsman","bowler","allRounder","wicketKeeper"]
+              player_image:
+                type: string
+                nullable : true
+                example : "imageData" 
+
+    TeamDetailResponse:
+      properties:
+        response:
+          type: array
+          items: 
+            type: object
+            properties:
+              team_id:
+                type: integer
+                example: 1
+              team_name:
+                type: string
+                example: "CSK"                      
+    NotFound:
+      title: NotFound
+      type: object
+      properties:
+        message:
+          type: string
+          example: Not Found
+    AuctionTeamResponse:
+      type: object
+      properties:
+        response:
+          type: array
+          items: 
+            type: object 
+            properties:
+              auctionId:
+                type: integer
+                example: 1
+              teamStatus:
+                type: string
+                enum: ['accepted', 'pending']
+              auctionName:
+                type: string
+                example: 'IPL'
+              auctionstartTime:
+                type: string
+                example: "2020-10-04T17:42:49"
+    AuctionTeamDeleted:
+      title: Successfully Deleted
+      type: object
+      properties:
+        message:
+          type: boolean
+          example: true
+    AuctionsPendingRequestResponseBody:
+      type: object
+      properties:
+        response:
+            type: array
+            items: 
+              type: object 
+              properties:
+                t_id:
+                  type: integer
+                  example: 101
+                t_name:
+                  type: string
+                  example: "RCB"
+                auctionId:
+                  type: integer
+                  example: 1
+                auction_name:
+                  type: string
+                  example: "IPL"
+    OngoingAuctionResponseBody:
+      type: object
+      properties:
+        a_id:
+          type: integer
+          example: 1
+        a_name:
+          type: string
+          example: "SFKJ"
+        a_start_time:
+          type: string
+          example: "2024-01-23T00:00:00.000Z"
+        a_country:
+          type: string
+          example: "India"               
+  securitySchemes:
+    AuctionAuthorizer:
+      type: "apiKey"
+      name: "Authorization"
+      in: "header"
+      x-amazon-apigateway-authtype: "custom"
+      x-amazon-apigateway-authorizer:        
+        todo-authorizerUri: 
+          Fn::Sub: 'todo-auth'
+        authorizerResultTtlInSeconds: 0
+        identitySource: "method.request.header.Authorization"
+        type: "request"

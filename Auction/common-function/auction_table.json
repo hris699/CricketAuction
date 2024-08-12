@@ -1,0 +1,16 @@
+{
+    "AUCTION_ID":"a_id",
+    "AUCTION_NAME":"a_name",
+    "START_TIME":"a_start_time",
+    "END_TIME":"a_end_time",
+    "PURSE_VALUE":"a_purse_value",
+    "NO_OF_TEAMS":"a_no_of_teams",
+    "MIN_TEAM_SIZE":"a_min_team_size",
+    "MAX_TEAM_SIZE":"a_max_team_size",
+    "IS_DELETED":"a_is_deleted",
+    "CREATED_BY":"a_created_by",
+    "AUCTION_DESCRIPTION":"a_description",
+    "AUCTION_IMAGE":"a_image",
+    "AUCTION_COUNTRY":"a_country"
+}
+

@@ -1,0 +1,215 @@
+Description: Create a CodePipeline to include Nested CloudFormation, CodeBuild and Approval steps.
+
+Parameters:
+  CodeBuildRole:
+    Type: String
+    Description: CodeBuild role
+  CodePipelineRole:
+    Type: String
+    Description: CodePipeline role
+  SourceCodeRepoName:
+    Type: String
+    Description: Name of the repo which contains Source Code.
+  ArtifactStoreS3Location:
+    Type: String
+    Description: Name of the Artifact Store Bucket.
+  ECSStackUrl:
+    Type: String
+    Description: URL for ECS template.
+  SubnetId1:
+    Description: Subnet ID for DB Instance Subnet Group
+    Type: String
+  SubnetId2:
+    Description: Subnet ID for DB Instance Subnet Group
+    Type: String
+  TaskDefName:
+    Description: Name of the task defination
+    Type: String
+  ECSTaskExecutionRole:
+    Description: Task execution role Arn
+    Type: String
+  ContainerName:
+    Description: Name of the container for task definitions
+    Type: String
+  ContainerImage:
+    Description: Container Image URL for task definitions
+    Type: String
+  ContainerPort:
+    Description: Container Port for Image.
+    Type: String
+  ContainerHostPort:
+    Description: Container Host Port for Image
+    Type: String
+  ECSClusterName:
+    Type: String
+  
+
+Resources:
+  EcsStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref ECSStackUrl
+      Parameters:
+          TaskDefName: !Ref TaskDefName
+          ECSTaskExecutionRole: !Ref ECSTaskExecutionRole
+          ContainerName: !Ref ContainerName
+          ContainerImage: !Ref ContainerImage
+          ContainerPort: !Ref  ContainerPort
+          ContainerHostPort: !Ref ContainerHostPort
+          SubnetId1: !Ref SubnetId1
+          SubnetId2: !Ref SubnetId2
+          ECSClusterName: !Ref ECSClusterName
+  BuildTestProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name:
+        Fn::Sub: BuildTest-${AWS::StackName}
+      Description: Build to test source code with 90% coverage
+      ServiceRole: !Ref CodeBuildRole
+      Artifacts:
+        Type: CODEPIPELINE
+        Name:
+          Fn::Sub: BuildTest-${AWS::StackName}
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_MEDIUM
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:4.0
+        EnvironmentVariables:
+          - Name: TEMPLATE_PREFIX
+            Value: codebuild
+      Source:
+        Type: CODEPIPELINE
+        BuildSpec: test_spec.yaml
+      TimeoutInMinutes: 15
+      EncryptionKey:
+        Fn::Sub: arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/s3
+      Tags:
+        - Key: Name
+          Value:
+            Fn::Sub: BuildTest-${AWS::StackName}
+
+  BuildDockerImageProject:
+    Type: AWS::CodeBuild::Project
+    Properties:
+      Name:
+        Fn::Sub: BuildDockerImage-${AWS::StackName}
+      Description:  build docker image and push to ECR
+      ServiceRole: !Ref CodeBuildRole
+      Artifacts:
+        Type: CODEPIPELINE
+        Name:
+          Fn::Sub: BuildDockerImage-${AWS::StackName}
+      Environment:
+        Type: LINUX_CONTAINER
+        ComputeType: BUILD_GENERAL1_MEDIUM
+        Image: aws/codebuild/amazonlinux2-x86_64-standard:4.0
+      Source:
+        Type: CODEPIPELINE
+      TimeoutInMinutes: 15
+      EncryptionKey:
+        Fn::Sub: arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/s3
+      Tags:
+        - Key: Name
+          Value:
+            Fn::Sub: BuildDockerImage-${AWS::StackName}
+
+  DeployPipeline:
+    Type: "AWS::CodePipeline::Pipeline"
+    Properties:
+      Name:
+        Fn::Sub: ContinuousDelivery-${AWS::StackName}
+      RoleArn: !Ref CodePipelineRole
+      Stages:
+        -
+          Name: Source
+          Actions:
+            -
+              Name: dev
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: 1
+                Provider: CodeCommit
+              OutputArtifacts:
+                -
+                  Name: TemplateOutput
+              Configuration:
+                BranchName: dev
+                RepositoryName:
+                  Ref: SourceCodeRepoName
+              RunOrder: 1
+            -
+              Name: prod
+              ActionTypeId:
+                Category: Source
+                Owner: AWS
+                Version: 1
+                Provider: CodeCommit
+              OutputArtifacts:
+                -
+                  Name: TemplateOutput
+              Configuration:
+                BranchName: master
+                RepositoryName:
+                  Ref: SourceCodeRepoName
+              RunOrder: 1
+        -
+          Name: Build
+          Actions:
+            -
+              Name: TestBuild
+              InputArtifacts:
+                - Name: TemplateOutput
+              ActionTypeId:
+                Category: Test
+                Owner: AWS
+                Version: 1
+                Provider: CodeBuild
+              OutputArtifacts:
+                -
+                  Name: TestArtifact
+              Configuration:
+                ProjectName:
+                  Ref: BuildTestProject
+              RunOrder: 1
+            
+            -
+              Name: BuildDockerImage
+              InputArtifacts:
+                -
+                  Name: TestArtifact
+              ActionTypeId:
+                Category: Build
+                Owner: AWS
+                Version: 1
+                Provider: CodeBuild
+              OutputArtifacts:
+                -
+                  Name: BuildOutputImage
+              Configuration:
+                ProjectName:
+                  Ref: BuildDockerImageProject
+              RunOrder: 2
+        -
+          Name: DeployApplication
+          Actions:
+            -
+              Name: DeployApplication
+              InputArtifacts:
+                -
+                  Name: BuildOutputImage
+              ActionTypeId:
+                Category: Deploy
+                Owner: AWS
+                Version: 1
+                Provider: ECS
+              Configuration:
+                ClusterName: !Ref ECSClusterName
+                ServiceName: !Ref EcsStack
+              RunOrder: 1
+            
+      ArtifactStore:
+          Type: S3
+          Location: 
+            !Ref ArtifactStoreS3Location
+

@@ -1,0 +1,22 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 16
+  pre_build:
+    commands:
+      - aws codeartifact login --tool npm --repository AWSHelper --domain my-domin --domain-owner 094853031708 --region us-east-2
+      - echo Installing source NPM dependencies...
+      - npm install
+    
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Compiling the Node.js code
+      - chmod 775 test.sh
+      - sh ./test.sh
+
+artifacts:
+  files:
+    - '**/*'

@@ -1,0 +1,8 @@
+{
+    "TEAM_ID":"t_id",
+    "TEAM_USER_ID":"t_user_id",
+    "TEAM_NAME":"t_name",
+    "TEAM_OWNER_NAME":"t_owner_name",
+    "TEAM_LOGO":"t_logo",
+    "IS_DELETED":"t_is_deleted"
+}

@@ -1,0 +1,220 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: ECS Cluster
+Parameters:
+  TaskDefNameAuction:
+    Description: Name of the task defination
+    Type: String
+  TaskDefNameTeams:
+    Description: Name of the task defination
+    Type: String
+  TaskDefNameAuth:
+    Description: Name of the task defination
+    Type: String
+  TaskDefNamePlayers:
+    Description: Name of the task defination
+    Type: String
+  ECSTaskExecutionRole:
+    Description: Task execution role Arn
+    Type: String
+  ContainerNameAuction:
+    Description: Name of the container for task definitions
+    Type: String
+  ContainerNameTeams:
+    Description: Name of the container for task definitions
+    Type: String
+  ContainerNameAuth:
+    Description: Name of the container for task definitions
+    Type: String
+  ContainerNamePlayers:
+    Description: Name of the container for task definitions
+    Type: String
+  ContainerImageAuction:
+    Description: Container Image URL for task definitions
+    Type: String
+  ContainerImageTeams:
+    Description: Container Image URL for task definitions
+    Type: String
+  ContainerImageAuth:
+    Description: Container Image URL for task definitions
+    Type: String
+  ContainerImagePlayers:
+    Description: Container Image URL for task definitions
+    Type: String
+  ContainerPortAuction:
+    Description: Container Port for Image.
+    Type: Number
+  ContainerPortTeams:
+    Description: Container Port for Image.
+    Type: Number
+  ContainerPortAuth:
+    Description: Container Port for Image.
+    Type: Number
+  ContainerPortPlayers:
+    Description: Container Port for Image.
+    Type: Number
+  ContainerHostPortTeams:
+    Description: Container Host Port for Image
+    Type: Number
+  ContainerHostPortAuth:
+    Description: Container Host Port for Image
+    Type: Number
+  ContainerHostPortPlayers:
+    Description: Container Host Port for Image
+    Type: Number
+  ContainerHostPortAuction:
+    Description: Container Host Port for Image
+    Type: Number
+  ECSClusterName:
+    Type: String
+  SubnetId1:
+    Type: String
+  SubnetId2:
+    Type: String  
+Resources:
+
+  ECSCluster:
+    Type: AWS::ECS::Cluster
+    Properties:
+      ClusterName: Auction-System-Cluster
+  ECSTaskDefinitionAuction:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub
+      - UAS-${TaskDefName}
+      - { TaskDefName: !Ref TaskDefNameAuction }
+      RequiresCompatibilities:
+       - FARGATE
+      Memory: '2048'
+      Cpu: '1024'
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref ECSTaskExecutionRole
+      ContainerDefinitions:
+        - Name: !Ref ContainerNameAuction
+          Image: !Ref ContainerImageAuction
+          PortMappings:
+            - ContainerPort: !Ref ContainerPortAuction
+              HostPort: !Ref ContainerHostPortAuction
+          Memory: 1024
+  ECSTaskDefinitionTeams:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub
+      - UAS-${TaskDefName}
+      - { TaskDefName: !Ref TaskDefNameTeams }
+      RequiresCompatibilities:
+       - FARGATE
+      Memory: '2048'
+      Cpu: '1024'
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref ECSTaskExecutionRole
+      ContainerDefinitions:
+        - Name: !Ref ContainerNameTeams
+          Image: !Ref ContainerImageTeams
+          PortMappings:
+            - ContainerPort: !Ref ContainerPortTeams
+              HostPort: !Ref ContainerHostPortTeams
+          Memory: 1024
+  ECSTaskDefinitionAuth:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub
+      - UAS-${TaskDefName}
+      - { TaskDefName: !Ref TaskDefNameAuth }
+      RequiresCompatibilities:
+       - FARGATE
+      Memory: '2048'
+      Cpu: '1024'
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref ECSTaskExecutionRole
+      ContainerDefinitions:
+        - Name: !Ref ContainerNameAuth
+          Image: !Ref ContainerImageAuth
+          PortMappings:
+            - ContainerPort: !Ref ContainerPortAuth
+              HostPort: !Ref ContainerHostPortAuth
+          Memory: 1024
+  ECSTaskDefinitionPlayers:
+    Type: AWS::ECS::TaskDefinition
+    Properties:
+      Family: !Sub
+      - UAS-${TaskDefName}
+      - { TaskDefName: !Ref TaskDefNamePlayers }
+      RequiresCompatibilities:
+       - FARGATE
+      Memory: '2048'
+      Cpu: '1024'
+      NetworkMode: awsvpc
+      ExecutionRoleArn: !Ref ECSTaskExecutionRole
+      ContainerDefinitions:
+        - Name: !Ref ContainerNamePlayers
+          Image: !Ref ContainerImagePlayers
+          PortMappings:
+            - ContainerPort: !Ref ContainerPortPlayers
+              HostPort: !Ref ContainerHostPortPlayers
+          Memory: 1024
+  ECSServiceAuction:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref ECSClusterName
+      DesiredCount: 1
+      TaskDefinition:
+        !Ref ECSTaskDefinitionAuction
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsVpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets: 
+            - !Ref SubnetId1
+            - !Ref SubnetId2
+  ECSServiceTeams:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref ECSClusterName
+      DesiredCount: 1
+      TaskDefinition:
+        !Ref ECSTaskDefinitionTeams
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsVpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets: 
+            - !Ref SubnetId1
+            - !Ref SubnetId2
+  ECSServiceAuth:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref ECSClusterName
+      DesiredCount: 1
+      TaskDefinition:
+        !Ref ECSTaskDefinitionAuth
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsVpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets: 
+            - !Ref SubnetId1
+            - !Ref SubnetId2
+  ECSServicePlayers:
+    Type: AWS::ECS::Service
+    Properties:
+      Cluster: !Ref ECSClusterName
+      DesiredCount: 1
+      TaskDefinition:
+        !Ref ECSTaskDefinitionPlayers
+      LaunchType: FARGATE
+      NetworkConfiguration:
+        AwsVpcConfiguration:
+          AssignPublicIp: ENABLED
+          Subnets: 
+            - !Ref SubnetId1
+            - !Ref SubnetId2
+
+
+  
+
+
+
+
+
+

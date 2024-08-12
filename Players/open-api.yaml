@@ -1,0 +1,591 @@
+openapi: '3.0.0'
+info:
+    title: Player-Swagger 
+    version: 1.0.0
+    description: An swagger documentation for Player MicroService
+    termsOfService: http://swagger.io/terms/
+    license:
+      name: Apache 2.0
+      url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://{base_url}/{env_id}
+    variables:
+      base_url:
+        default: localhost:8081
+        description: server
+      env_id:
+        default: api
+        description: path selector
+
+paths:
+  /players:
+    get:
+      description: Returns all Players
+      tags:
+        - Manage Players
+      operationId: findPlayers
+      responses:
+        200:
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Player"
+        204:
+          description: "No Player"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoPlayer"        
+        400:
+          description: "Bad Request"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        404:
+          description: Player not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoPlayer"
+        500:
+          description: "Internal Server Error"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+    post:
+      tags:
+        - Manage Players
+      description: Creates a new player.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Player'    
+      responses:
+        200:
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Player"
+        204:
+          description: "No Player"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoPlayer"        
+        400:
+          description: "Bad Request"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        500:
+          description: "Internal Server Error"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+  /players/{player_id}:
+    put:
+      tags:
+        - Manage Players
+      description: Updates a player.
+      parameters:
+        - in: path
+          name: player_id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UpdatePlayer'
+      responses:
+        200:
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePlayer"
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        404:
+          description: Player not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoPlayer"
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+    delete:
+      tags:
+        - Manage Players
+      description: Delete a player.
+      parameters:
+        - in: path
+          name: player_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UpdatePlayer"
+        400:
+          description: "Bad Request"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        404:
+          description: Player not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoPlayer"
+        500:
+          description: "Internal Server Error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+  /players/details:
+    post:
+      description: Returns all Player details based on ids
+      tags:
+        - Manage Players
+      operationId: getPlayerByIds
+      responses:
+        200:
+          description: OK
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Player"
+        204:
+          description: "No Player"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoPlayer"        
+        400:
+          description: "Bad Request"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BadRequest"
+        401:
+          description: "Unauthorized"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Unauthorized"
+        404:
+          description: Player not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NoPlayer"
+        500:
+          description: "Internal Server Error"
+          headers:
+            Access-Control-Allow-Origin:
+              schema:
+                type: "string"
+            Access-Control-Allow-Methods:
+              schema:
+                type: "string"
+            Access-Control-Allow-Headers:
+              schema:
+                type: "string"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/InternalServerError"
+
+  /players/{player_id}/auctions:
+    get:
+        tags:
+          - Manage Player 
+        description: Get player associated with auctions.
+        parameters:
+          - in: path
+            name: player_id
+            required: true
+            schema:
+              type: integer
+        responses:
+          200:
+            description: OK
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/PlayerAuctionSuccessResponse"
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          404:
+            description: Team not found
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoPlayer"
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"
+    delete:
+        tags:
+          - Manage Player 
+        description: Deletes a player.
+        parameters:
+          - in: path
+            name: player_id
+            required: true
+            schema:
+              type: integer
+          - in: query
+            name: auction_id
+            required: true
+            schema:
+              type: string
+              items:
+                type: integer
+          - in: query
+            name: start_time
+            required: true
+            schema:
+              type: string
+              items:
+                type: integer
+        responses:
+          200:
+            description: OK
+            headers:
+              Access-Control-Allow-Origin:
+                schema:
+                  type: "string"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/DeletePlayerResponse"
+          400:
+            description: "Bad Request"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/BadRequest"
+          404:
+            description: Team not found
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/NoPlayer"
+          500:
+            description: "Internal Server Error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/InternalServerError"
+                           
+              
+components:
+  schemas:
+    Empty:
+      title: "Empty Schema"
+      type: "object"
+   
+    Player:
+      required:
+        - player_name
+        - player_email
+        - player_age
+        - player_contact
+        - player_type
+      type: object
+ 
+      properties:
+        player_name:
+          type: string
+          example: "Name"
+        player_email:
+          type: string
+          example: "name@gmail.com"
+        player_age:
+          type: string
+          example: "20"
+        player_contact:
+          type: string
+          example: "8982315022"
+        player_type:
+          type: string
+          enum: ["batsman","bowler","allRounder","wicketKeeper"]
+        player_image:
+          type: string
+          format: binary
+          nullable : true
+          example : "imageData"
+ 
+    UpdatePlayer:
+      type: object
+      properties:  
+        player_name:
+          type: string
+          example: "Name"
+        player_email:
+          type: string
+          example: "name@gmail.com"
+        player_age:
+          type: string
+        player_contact:
+          type: string
+          example: "8269896041"
+        player_image:
+          type: string
+          nullable : true
+          format: binary
+          example : "imageData"
+        player_type:
+          type: string
+          enum: ["batsman","bowler","allRounder","wicketKeeper"]
+ 
+    InternalServerError:
+      title: Internal server error occurred
+      type: object
+      properties:
+        message:
+          type: string
+          example: Internal Server Error
+    Unauthorized:
+      title: Unauthorized
+      type: object
+      properties:
+        message:
+          type: string
+          example: Unauthorized
+    NoPlayer:
+      title: NoPlayer
+      type: object
+      properties:
+        message:
+          type: string
+          example: No Player
+    BadRequest:
+      title: Invalid input parameters
+      type: object
+      properties:
+        message:
+          type: string
+          example: Bad Request
+
+    PlayerAuctionSuccessResponse:
+      properties:
+        response:
+          type: array
+          items: 
+            type: object
+            properties:
+              auctionId:
+                type: integer
+                example: 1
+              auctionName:
+                type: string
+                example: "IPL"
+              auctionStartTime:
+                type: string
+                example: "2024-02-02T13:00:00.000Z"
+    DeletePlayerResponse:
+      type: object
+      properties:
+        message:
+          type: string
+          example: Player Deleted Successfully

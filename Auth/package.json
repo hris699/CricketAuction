@@ -1,0 +1,40 @@
+{
+  "name": "UAS_AUCTION",
+  "version": "1.0.0",
+  "description": "node express auction api with sequelize",
+  "main": "index.js",
+  "scripts": {
+    "dev-test-coverage": "export NODE_ENV=development&& jest --coverage",
+    "prod-test-coverage": "export NODE_ENV=production&& jest --coverage",
+    "test-coverage": "set NODE_ENV=local&& jest --coverage",
+    "dev": "export NODE_ENV=development&& node index.js",
+    "local": "set NODE_ENV=local&& node index.js",
+    "prod": "export NODE_ENV=production&& node index.js"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "mysql"
+  ],
+  "author": "hardik.jain@yash.com",
+  "license": "ISC",
+  "dependencies": {
+    "@aws-sdk/client-cognito-identity-provider": "^3.481.0",
+    "@aws-sdk/client-secrets-manager": "^3.454.0",
+    "amazon-cognito-identity-js": "^6.3.7",
+    "aws-sdk": "^2.1526.0",
+    "aws-sdk-client-mock": "^3.0.0",
+    "axios": "^1.6.5",
+    "cognito-express": "^3.0.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.17.1",
+    "express-openapi-validator": "^4.14.0-beta.1",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "swagger": "^0.0.1",
+    "swagger-node-express": "^1.2.3",
+    "swagger-ui-express": "^5.0.0",
+    "yamljs": "^0.3.0"
+  }
+}

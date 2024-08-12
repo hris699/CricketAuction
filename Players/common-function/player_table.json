@@ -1,0 +1,10 @@
+{
+    "PLAYER_ID":"p_id",
+    "PLAYER_NAME":"p_name",
+    "PLAYER_EMAIL":"p_email",
+    "PLAYER_AGE":"p_age",
+    "PLAYER_CONTACT":"p_contact",
+    "PLAYER_IMAGE":"p_image",
+    "PLAYER_TYPE":"p_type",
+    "PLAYER_IS_DELETED":"p_is_deleted"
+}

@@ -1,0 +1,8 @@
+{
+    "BID_ID":"bh_bid_id",
+    "AUCTION_ID":"bh_auction_id",
+    "TEAM_ID":"bh_team_id",
+    "PLAYER_ID":"bh_player_id",
+    "LAST_BID":"bh_last_bid",
+    "CURRENT_BID":"bh_current_bid"
+}

@@ -1,0 +1,6 @@
+{
+    "AUCTION_ID":"at_auction_id",
+    "TEAM_ID":"at_team_id",
+    "CURRENT_WALLET_BALANCE":"at_current_wallet_balance",
+    "APPROVAL_STATUS":"at_approval_status"
+}

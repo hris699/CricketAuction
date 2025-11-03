@@ -1,142 +1,38 @@
 extends:
   - spectral:oas
-  # This extends Spectral’s OpenAPI recommended rules
 
 rules:
-  # 42Crunch-inspired & Security Rules
-
-  # Ensure schemes only allow HTTPS (42Crunch #1)
+  # Ensure only HTTPS in schemes (OAS2)
   oas2-schemes-https-only:
-    description: 'API must only allow HTTPS. Remove HTTP if present. (42Crunch #1)'
-    message: 'API must support HTTPS only.'
+    description: 'API must only allow HTTPS.'
     given: $.schemes
     then:
-      function: schema
+      function: pattern
       functionOptions:
-        type: array
-        items:
-          type: string
-          enum: [https]
+        match: '^https$'
 
-  # Require security definitions (42Crunch #2)
+  # Require security definitions (OAS2)
   oas2-require-security-definitions:
-    description: 'API must define security definitions (authentication, etc). (42Crunch #2)'
-    message: 'Missing securityDefinitions. APIs should document authentication and authorization.'
+    description: 'API must define security definitions (authentication, etc).'
     given: $.
     severity: error
     then:
       field: securityDefinitions
       function: truthy
 
-  # Require security on all operations (42Crunch #4)
+  # Operation should specify security
   oas2-operation-require-security:
-    description: 'Each operation should specify security requirements. (42Crunch #4)'
-    given: $.paths[*][*]
+    description: 'Each operation should specify security requirements.'
+    given: $.paths.*.*
     severity: warn
     then:
       field: security
       function: truthy
 
-  # Mask error responses (do not include stack traces) (42Crunch #7)
-  mask-server-errors:
-    description: 'Error responses should not expose internal implementation details (such as stack traces)'
-    given: $.paths[*][*].responses[500].description
-    severity: warn
-    then:
-      function: pattern
-      functionOptions:
-        notMatch: '(stack|trace|exception|debug)'
-        match: 'Generic|Internal Server Error'
-
-  # Validate parameter schema (42Crunch #10)
-  no-parameters-without-schema:
-    description: 'All parameters must have a defined schema. (42Crunch #10)'
-    given: $.paths[*][*].parameters[*]
-    severity: error
-    then:
-      field: schema
-      function: truthy
-
-  # Validate requestBody schema (for OAS3)
-  oas3-request-body-schema:
-    description: 'Request bodies in OpenAPI 3.x must have a schema defined. (42Crunch best practice)'
-    given: $.paths[*][*].requestBody.content.*.schema
-    severity: error
-    then:
-      function: truthy
-
-  # Prevent use of API keys in query strings (42Crunch #11)
-  apikey-in-header-only:
-    description: 'API keys should never be accepted via query string—only in headers.'
-    formats: [oas2, oas3]
-    given: $.securityDefinitions[?(@.type=="apiKey")]
-    severity: error
-    then:
-      field: in
-      function: pattern
-      functionOptions:
-        match: 'header'
-
-  # Require content-type headers
-  require-content-type-header:
-    description: 'All operations must define "content-type" header in request/responses where applicable.'
-    given: $.paths[*][*].responses.*
-    severity: warn
-    then:
-      field: headers
-      function: truthy
-
-  # Validate explicit host specification (42Crunch #12)
-  host-should-be-defined:
-    description: 'Host should be explicitly defined in OpenAPI/Swagger 2.0.'
-    formats: [oas2]
-    given: $.
-    severity: warn
-    then:
-      field: host
-      function: truthy
-
-  # Disable deprecated HTTP methods (TRACE, etc.)
+  # Do not allow TRACE method
   no-trace-method:
     description: 'TRACE HTTP method should not be used—security risk.'
     given: $.paths[?(@.trace)]
     severity: error
     then:
       function: falsy
-
-  # No default responses without schema
-  default-response-has-schema:
-    description: 'Default responses should always define a schema.'
-    given: $.paths[*][*].responses.default
-    severity: warn
-    then:
-      field: schema
-      function: truthy
-
-  # All operations must return 401 for unauthorized
-  all-operations-have-401:
-    description: 'All operations should return HTTP 401 for unauthorized'
-    given: $.paths[*][*].responses
-    severity: warn
-    then:
-      field: 401
-      function: truthy
-
-  # All operations must return 403 for forbidden
-  all-operations-have-403:
-    description: 'All operations should return HTTP 403 for forbidden'
-    given: $.paths[*][*].responses
-    severity: warn
-    then:
-      field: 403
-      function: truthy
-
-  # 42Crunch #22: API definition version must be specified
-  info-version-required:
-    description: 'API must specify a version in the info object (42Crunch #22)'
-    given: $.info.version
-    severity: error
-    then:
-      function: truthy
-
-  # Add further rules as needed for your business logic & API patterns

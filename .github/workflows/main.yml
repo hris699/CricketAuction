@@ -31,6 +31,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           openapi: 'Auction/auctionSwagger.yaml'
+          args: --reporter json --no-server-validation
       - name: Move VulnAPI report
         run: |
           if [ -f vulnapi-report.html ]; then

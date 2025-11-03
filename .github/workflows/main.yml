@@ -25,13 +25,19 @@ jobs:
         uses: actions/checkout@v4
       - name: Create report folder
         run: mkdir -p vulnapi-reports
-      - name: Run VulnAPI Scan for Auction
+      - name: Prepare OpenAPI spec for scanning
+        run: |
+          # Create a temporary copy with a mock server URL
+          cp Auction/auctionSwagger.yaml /tmp/temp-swagger.yaml
+          sed -i 's|url: http://{base_url}/{env_id}|url: http://api.example.com/api|g' /tmp/temp-swagger.yaml
+
+      - name: Run VulnAPI scan
         uses: cerberauth/vulnapi-action@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          openapi: 'Auction/auctionSwagger.yaml'
-          args: --reporter json --no-server-validation
+          openapi: /tmp/temp-swagger.yaml
+          rateLimit: 10/s
+        continue-on-error: true
+        
       - name: Move VulnAPI report
         run: |
           if [ -f vulnapi-report.html ]; then

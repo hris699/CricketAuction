@@ -1,0 +1,27 @@
+name: OpenAPI Spectral Validation
+
+on:
+  pull_request:
+    paths:
+      - 'Auction/*.yaml'
+      - 'Auth/*.yaml'
+      - 'Players/*.yaml'
+      - 'Teams/*.yaml'
+  push:
+    branches: [main]
+    paths:
+      - 'Auction/*.yaml'
+      - 'Auth/*.yaml'
+      - 'Players/*.yaml'
+      - 'Teams/*.yaml'
+
+jobs:
+  spectral-validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: stoplightio/spectral-action@latest
+        with:
+          file_glob: '{Auction,Auth,Players,Teams}/*.yaml'

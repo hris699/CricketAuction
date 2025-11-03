@@ -13,6 +13,9 @@ jobs:
       - name: Install Spectral CLI
         run: npm install -g @stoplight/spectral-cli
 
+      - name: Create report folder
+        run: mkdir -p spectral-reports
+        
       - name: Run Spectral report for Auction
         run: spectral lint Auction/auctionSwagger.yaml --format html > spectral-reports/auction-report.html
 

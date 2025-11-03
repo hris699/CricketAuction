@@ -1,44 +1,21 @@
-name: Manual OpenAPI Spectral & VulnAPI Report
-
-on:
-  workflow_dispatch:
-
 jobs:
-  spectral-validate:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Install Spectral CLI
-        run: npm install -g @stoplight/spectral-cli
-
-      - name: Create report folder
-        run: mkdir -p spectral-reports
-
-      - name: Run Spectral report for Auction
-        run: spectral lint Auction/auctionSwagger.yaml --format html --ruleset .spectral.yaml > spectral-reports/auction-report.html || true
-
-      # Add other Spectral lint steps here (Auth, Teams, Players) as needed
-
-      - name: Upload Spectral reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: spectral-reports
-          path: spectral-reports/
-
   vulnapi-scan:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Create VulnAPI report folder
+      - name: Ensure Python and pip
+        run: sudo apt-get update && sudo apt-get install -y python3-pip
+
+      - name: Install VulnAPI CLI
+        run: pip install vulnapi
+
+      - name: Create report folder
         run: mkdir -p vulnapi-reports
 
-      - name: Run VulnAPI scan (Docker)
-        run: |
-          docker run --rm -v ${{ github.workspace }}:/scan vulnapi/vulnapi -i /scan/Auction/auctionSwagger.yaml -o /scan/vulnapi-reports/auction-vulnapi-report.html || true
+      - name: Run VulnAPI scan (CLI)
+        run: vulnapi -i Auction/auctionSwagger.yaml -o vulnapi-reports/auction-vulnapi-report.html || true
 
       - name: Upload VulnAPI reports
         uses: actions/upload-artifact@v4

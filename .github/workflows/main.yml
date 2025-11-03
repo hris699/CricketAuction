@@ -37,6 +37,8 @@ jobs:
           openapi: /tmp/temp-swagger.yaml
           rateLimit: 10/s
         continue-on-error: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Move VulnAPI report
         run: |

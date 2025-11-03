@@ -35,7 +35,6 @@ jobs:
         uses: cerberauth/vulnapi-action@v1
         with:
           openapi: /tmp/temp-swagger.yaml
-          rateLimit: 10/s
         continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

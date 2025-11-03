@@ -2,81 +2,89 @@ extends:
   - "spectral:oas"
 
 rules:
-  # You can add custom rules here or adjust built-in rules.
-  # The following is the default recommended Spectral ruleset for OpenAPI files.
-
-  # Require info.title
+  # Require info.title for proper documentation
   info-title:
     description: "OpenAPI 'info.title' must be specified."
-    message: "The info.title field is required."
     severity: error
     given: "$.info.title"
     then:
       function: truthy
 
-  # Require info.version
+  # Require info.version for version tracking
   info-version:
     description: "OpenAPI 'info.version' must be specified."
-    message: "The info.version field is required."
     severity: error
     given: "$.info.version"
     then:
       function: truthy
 
-  # Recommend info.contact
+  # Recommend providing contact information for support
   info-contact:
     description: "OpenAPI 'info.contact' is recommended."
-    message: "Specifying a contact for the API is recommended."
     severity: warn
     given: "$.info.contact"
     then:
       function: truthy
 
-  # Recommend info.description
+  # Recommend providing a description for the API
   info-description:
     description: "OpenAPI 'info.description' is recommended."
-    message: "Specifying a description for the API is recommended."
     severity: warn
     given: "$.info.description"
     then:
       function: truthy
 
-  # Always define responses for each operation
-  operation-4xx-response:
-    description: "Operations should define at least one 4xx response."
-    message: "Define at least one 4xx response for this operation."
-    severity: warn
-    given: "$.paths[*][*].responses"
-    then:
-      function: defined
-      functionOptions:
-        statusCodes: ["400", "401", "403", "404"]
-
-  operation-success-response:
-    description: "Operations should define a 2xx success response."
-    message: "Define at least one 2xx success response for this operation."
+  # Each path should have operations defined
+  path-has-operations:
+    description: "Each path should have at least one HTTP operation."
     severity: error
-    given: "$.paths[*][*].responses"
+    given: "$.paths[*]"
     then:
-      function: defined
+      function: length
       functionOptions:
-        statusCodes: ["200", "201", "202", "204"]
+        min: 1
 
-  # Path parameter names must always be used
-  path-params-used:
-    description: "All path parameters must be defined and referenced."
-    message: "Unused path parameter detected."
-    severity: error
-    given: "$.paths[*].parameters[?(@.in=='path')]"
-    then:
-      function: defined
-
-  # All parameters should have a description
+  # Parameters should have descriptions
   param-description:
-    description: "All parameters must have a description."
-    message: "Parameter description is required."
+    description: "All parameters should have a description for clarity."
     severity: warn
     given: "$.paths[*][*].parameters[*]"
     then:
       field: "description"
+      function: truthy
+
+  # Success responses should be defined
+  operation-success-response:
+    description: "Operations should define at least one 2xx success response."
+    severity: error
+    given: "$.paths[*][*].responses"
+    then:
+      field: "200"
+      function: truthy
+
+  # Recommend providing 4xx error responses
+  operation-4xx-response:
+    description: "Operations should define at least one 4xx client error response."
+    severity: warn
+    given: "$.paths[*][*].responses"
+    then:
+      field: "400"
+      function: truthy
+
+  # Ensure security is considered
+  operation-should-define-security:
+    description: "Operations should define security requirements."
+    severity: warn
+    given: "$.paths[*][*]"
+    then:
+      field: "security"
+      function: truthy
+
+  # Path parameters must be defined
+  path-parameters-defined:
+    description: "Path parameters should be defined in the parameters section."
+    severity: error
+    given: "$.paths[*][*].parameters[?(@.in=='path')]"
+    then:
+      field: "name"
       function: truthy

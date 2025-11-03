@@ -15,18 +15,18 @@ jobs:
 
       - name: Create report folder
         run: mkdir -p spectral-reports
-        
+
       - name: Run Spectral report for Auction
-        run: spectral lint Auction/auctionSwagger.yaml --format html > spectral-reports/auction-report.html
+        run: spectral lint Auction/auctionSwagger.yaml --format html --ruleset .spectral.yaml > spectral-reports/auction-report.html
 
       - name: Run Spectral report for Auth
-        run: spectral lint Auth/authSwagger.yaml --format html > spectral-reports/auth-report.html
+        run: spectral lint Auth/authSwagger.yaml --format html --ruleset .spectral.yaml > spectral-reports/auth-report.html
 
       - name: Run Spectral report for Teams
-        run: spectral lint Teams/open-api.yaml --format html > spectral-reports/teams-report.html
+        run: spectral lint Teams/open-api.yaml --format html --ruleset .spectral.yaml > spectral-reports/teams-report.html
 
       - name: Run Spectral report for Players
-        run: spectral lint Players/open-api.yaml --format html > spectral-reports/players-report.html
+        run: spectral lint Players/open-api.yaml --format html --ruleset .spectral.yaml > spectral-reports/players-report.html
 
       - name: Upload Spectral reports
         uses: actions/upload-artifact@v4
